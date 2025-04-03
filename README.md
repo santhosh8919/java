@@ -118,6 +118,7 @@ String str2 = "Hello, Java!";
 - If a new literal is created and it already exists in the pool, Java **reuses** the reference instead of creating a new object.
 
 ```java
+//String Pool (memory type)
 String s1 = "Java";  
 String s2 = "Java";  // 😎s2 refers to the same object as s1  
 System.out.println(s1 == s2);  //😎 true (same memory location)
@@ -125,6 +126,7 @@ System.out.println(s1 == s2);  //😎 true (same memory location)
 
 **But when using `new String()`, a new object is always created:**
 ```java
+//Heap Memory (Object Memory) (memory type)
 String s3 = new String("Java");
 System.out.println(s1 == s3);  //📝⚠️ false (different memory locations)
 ```
