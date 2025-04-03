@@ -131,6 +131,101 @@ String s3 = new String("Java");
 System.out.println(s1 == s3);  //📝⚠️ false (different memory locations)
 ```
 
+Let's break down the code and explain each output in detail.  
+
+---
+
+### **Code Explanation**
+```java
+class Solution {
+    public static void main(String[] args) {
+        System.out.println(new Solution());
+```
+#### **What happens here?**
+- `new Solution()` creates an instance of the `Solution` class.
+- By default, `System.out.println(new Solution());` calls the **`toString()` method** from the `Object` class.
+- Since `toString()` is **not overridden**, it prints:
+  ```
+  Solution@<hashcode>
+  ```
+  Example output: `Solution@1b6d3586` (hashcode will be different every time).
+
+---
+
+### **String Comparison**
+```java
+String s1 = "hello";
+String s2 = "hello";
+String s3 = new String("hello");
+String s4 = new String("hello");
+```
+#### **Memory Allocation**
+| Variable | Creation Type | Storage Location | Reuse |
+|----------|--------------|------------------|-------|
+| `s1` | String Literal | String Pool | ✅ Reused |
+| `s2` | String Literal | String Pool | ✅ Reused |
+| `s3` | `new String("hello")` | Heap (New Object) | ❌ New object created |
+| `s4` | `new String("hello")` | Heap (New Object) | ❌ New object created |
+
+---
+
+### **Comparison using `==` (Reference Comparison)**
+#### **1. `System.out.println(s1 == s2); // true`**
+- `s1` and `s2` refer to the **same object** in the **String Pool**.
+- Since literals are stored in the String Pool and reused, both point to the same memory location.
+- **Output:** `true`
+
+#### **2. `System.out.print(s1 == s3); // false`**
+- `s1` is in the **String Pool**, while `s3` is in the **Heap** (because of `new String("hello")`).
+- They have the **same value** but are stored in different locations.
+- **Output:** `false`
+
+#### **3. `System.out.println(s3 == s4); // false`**
+- `s3` and `s4` are created using `new`, so each time a **new object** is created in the **Heap**.
+- They are two different objects with the **same value** but **different memory locations**.
+- **Output:** `false`
+
+---
+
+### **Comparison using `equals()` (Content Comparison)**
+#### **4. `System.out.println(s1.equals(s2)); // true`**
+- `.equals()` checks the **actual content** of the strings.
+- Both `s1` and `s2` store `"hello"`, so they are **equal**.
+- **Output:** `true`
+
+#### **5. `System.out.println(s1.equals(s3)); // true`**
+- `s1` (`String Pool`) and `s3` (`Heap`) store the **same value** `"hello"`.
+- `.equals()` compares content, not memory locations.
+- **Output:** `true`
+
+#### **6. `System.out.println(s3.equals(s4)); // true`**
+- `s3` and `s4` are **different objects**, but both contain `"hello"`.
+- `.equals()` checks content, so they are **equal**.
+- **Output:** `true`
+
+---
+
+### **Final Output**
+```
+Solution@<hashcode>  // Object memory reference
+true                 // s1 == s2 (same pool reference)
+false                // s1 != s3 (pool vs. heap)
+false                // s3 != s4 (different heap objects)
+true                 // s1.equals(s2) (same content)
+true                 // s1.equals(s3) (same content)
+true                 // s3.equals(s4) (same content)
+```
+
+---
+
+### **Summary**
+| Comparison | Type | Checks | Result |
+|------------|------|--------|--------|
+| `==` | Reference | Memory address | Different for new objects |
+| `.equals()` | Content | Actual string value | Always `true` if values match |
+
+Would you like to explore `intern()` to force `s3` and `s4` into the String Pool? 🚀
+
 ---
 
 ### **Advantages of String Literals**
